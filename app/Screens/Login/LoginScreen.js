@@ -23,7 +23,7 @@ const LoginScreen = () => {
         placeholder="Enter Mobile Number"
         keyboardType="phone-pad"
         value={mobileNumber}
-        onChangeText={setMobileNumber}
+        // onChangeText={setMobileNumber}
       />
 
       <TextInput
@@ -31,7 +31,7 @@ const LoginScreen = () => {
         placeholder="Enter OTP"
         keyboardType="numeric"
         value={otp}
-        onChangeText={setOtp}
+        // onChangeText={setOtp}
       />
 
       <Button title="Login" onPress={handleLogin} />
