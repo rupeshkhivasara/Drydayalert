@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "275410117942",
+    "project_id": "dry-day-alerts",
+    "storage_bucket": "dry-day-alerts.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275410117942:android:6721a6d75d12be2291bf97",
+        "android_client_info": {
+          "package_name": "com.drydayalerts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv4ZbEdeK3kQ50WqAcJQRL0ctOBp0DT_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

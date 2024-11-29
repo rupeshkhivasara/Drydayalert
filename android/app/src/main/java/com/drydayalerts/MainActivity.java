@@ -1,4 +1,4 @@
-package com.myfirstproject;
+package com.drydayalerts;
 
 import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
@@ -17,6 +17,10 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "MyFirstProject";
+  }
+  @Override
+    public void onNewIntent(Intent intent) {
+    super.onNewIntent(intent);
   }
   @Override
   protected void onCreate(Bundle savedInstanceState) {
