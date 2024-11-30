@@ -154,9 +154,9 @@ dependencies {
     implementation("com.facebook.react:react-android")
 
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.0.0")
-    implementation "com.google.firebase:firebase-core:17.0.1"
-    implementation "com.google.firebase:firebase-messaging:19.0.0"
-    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation "com.google.firebase:firebase-messaging"
+    implementation 'com.google.android.gms:play-services-auth:19.0.0'
     implementation platform('com.google.firebase:firebase-bom:29.1.0')
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
@@ -170,6 +170,28 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    afterEvaluate {
+    tasks.matching { it.name.startsWith("mapDebugSourceSetPaths") }.configureEach {
+        it.dependsOn("processDebugGoogleServices")
+    }
+}
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    // Add the resolution strategy here
+    configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.google.android.gms' &&
+                    details.requested.name == 'play-services-auth') {
+                details.useVersion '20.7.0'
+            }
+        }
+    }
+}
+
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

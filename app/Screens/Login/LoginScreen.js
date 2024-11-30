@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
 import {Picker} from '@react-native-picker/picker'; // Import Picker component
 import DeviceNumber from 'react-native-device-number';
+import messaging from '@react-native-firebase/messaging';
 
 const LoginScreen = ({navigation}) => {
   const [mobileNumber, setMobileNumber] = useState('');

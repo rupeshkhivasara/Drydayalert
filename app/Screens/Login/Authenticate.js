@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Loader from '../../../Utils/Components/Loader';
+import Loader from '../../Utils/Components/Loader';
 import messaging from '@react-native-firebase/messaging';
 
 const Authenticate = ({navigation}) => {
