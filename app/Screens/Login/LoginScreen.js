@@ -1,32 +1,70 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TextInput, Button, StyleSheet, Alert} from 'react-native';
-import {Picker} from '@react-native-picker/picker'; // Import Picker component
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  StyleSheet,
+  ImageBackground,
+  TouchableWithoutFeedback,
+  BackHandler,
+  ToastAndroid,
+} from 'react-native';
+import {Picker} from '@react-native-picker/picker';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import DeviceNumber from 'react-native-device-number';
 import messaging from '@react-native-firebase/messaging';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = ({navigation}) => {
   const [mobileNumber, setMobileNumber] = useState('');
   const [selectedState, setSelectedState] = useState('');
+  const [deviceToken, setDeviceToken] = useState('');
+  const [exitApp, setExitApp] = useState(false);
 
   useEffect(() => {
     messaging()
       .getToken()
       .then(token => {
-        console.log('<<fcmToken>>', token);
-        AsyncStorage.setItem('fcmToken', token);
+        // console.log('<<fcmToken>>', token);
+        // AsyncStorage.setItem('fcmToken', token);
+        setDeviceToken(token);
       });
     setDeviceNumber();
   }, []);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (exitApp) {
+        BackHandler.exitApp(); // Exit the app
+        return true;
+      } else {
+        setExitApp(true);
+        ToastAndroid.show('Press back again to exit', ToastAndroid.SHORT); // Show a toast
+        setTimeout(() => setExitApp(false), 2000); // Reset after 2 seconds
+        return true; // Prevent default behavior
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove(); // Clean up
+  }, [exitApp]);
 
   const setDeviceNumber = () => {
     DeviceNumber.get()
       .then(res => {
         setMobileNumber(res.mobileNumber.slice(3, 13));
       })
-      .catch(e => setShowLogin(true));
+      .catch(e => console.error(e));
   };
+
   const states = [
-    'Select State', // Placeholder option
+    'Select State',
     'Andaman and Nicobar Islands',
     'Andhra Pradesh',
     'Arunachal Pradesh',
@@ -65,7 +103,7 @@ const LoginScreen = ({navigation}) => {
     'West Bengal',
   ];
 
-  const handleSendOtp = async () => {
+  const handleLogin = async () => {
     if (!mobileNumber || mobileNumber.length !== 10) {
       Alert.alert('Error', 'Please enter a valid 10-digit mobile number.');
       return;
@@ -77,76 +115,144 @@ const LoginScreen = ({navigation}) => {
     }
 
     try {
-      const response = await fetch('https://example.com/api/send-otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const bodyData = new URLSearchParams();
+      bodyData.append('mobile_no', mobileNumber); // Add mobile number
+      bodyData.append('state', selectedState); // Add state
+      bodyData.append('token', deviceToken); // Add token
+
+      const response = await fetch(
+        'https://globalmahasabha.com/DALRT/login.php',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: bodyData.toString(), // Convert to URL-encoded string
         },
-        body: JSON.stringify({mobile: mobileNumber, state: selectedState}),
-      });
+      );
 
-      const data = await response.json();
+      console.log('####0', JSON.stringify(response));
 
-      if (response.ok) {
-        Alert.alert('Success', 'OTP sent successfully.');
-        navigation.navigate('Otp', {mobileNumber, state: selectedState}); // Pass mobile number and state to OTP screen
+      const data = await response.json(); // Parse the response as JSON
+      console.log('####0', JSON.stringify(data));
+      if (data.success === true) {
+        // Alert.alert('Success', 'Login successful.');
+        AsyncStorage.setItem('userID', mobileNumber);
+        navigation.navigate('Home', {mobileNumber, state: selectedState});
       } else {
-        Alert.alert('Error', data.message || 'Failed to send OTP.');
+        //   Alert.alert('Error', data.message || 'Failed to login.');
       }
     } catch (error) {
+      console.error('Login error:', error);
       Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Enter Mobile Number</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Mobile Number"
-        keyboardType="phone-pad"
-        value={mobileNumber}
-        onChangeText={setMobileNumber}
-      />
-      <Picker
-        selectedValue={selectedState}
-        onValueChange={itemValue => setSelectedState(itemValue)}
-        style={styles.picker}>
-        {states.map((state, index) => (
-          <Picker.Item key={index} label={state} value={state} />
-        ))}
-      </Picker>
-      <Button title="Send OTP" onPress={handleSendOtp} />
-    </View>
+    <ImageBackground
+      source={{
+        uri: 'https://images.stockcake.com/public/d/8/b/d8b30886-c5c0-445d-b960-e610ff1b95e3/vibrant-bar-scene-stockcake.jpg',
+      }}
+      style={styles.background}>
+      <View style={styles.overlay}>
+        <Text style={styles.title}>Dry Day Alert</Text>
+        <Text style={styles.subtitle}>Ab Plan Karo Befikar...</Text>
+        <TouchableWithoutFeedback onPress={setDeviceNumber}>
+          <View style={styles.inputContainer}>
+            {/* <Icon
+              name="champagne_glasses" 
+              size={20}
+              color="#fff"
+              style={styles.inputIcon}
+            /> */}
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Mobile Number"
+              placeholderTextColor="#ccc"
+              value={mobileNumber}
+              editable={false} // Non-editable input
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <Picker
+          selectedValue={selectedState}
+          onValueChange={itemValue => setSelectedState(itemValue)}
+          style={styles.picker}>
+          {states.map((state, index) => (
+            <Picker.Item key={index} label={state} value={state} />
+          ))}
+        </Picker>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+      </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  background: {
     flex: 1,
+    resizeMode: 'cover',
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
   },
   title: {
-    fontSize: 24,
+    fontSize: 38,
+    fontWeight: 'bold',
+    color: '#FFD700',
+    marginBottom: 8,
+  },
+  subtitle: {
+    fontSize: 18,
+    color: '#ddd',
     marginBottom: 24,
   },
-  input: {
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    paddingHorizontal: 12,
     marginBottom: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#555',
+    paddingHorizontal: 10,
+  },
+  inputIcon: {
+    marginRight: 8,
+  },
+  input: {
+    flex: 1,
+    color: '#fff',
+    height: 50,
   },
   picker: {
     width: '100%',
     height: 50,
     marginBottom: 16,
-    borderColor: '#ccc',
-    borderWidth: 1,
+    color: '#fff',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderRadius: 8,
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#FF6347',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
