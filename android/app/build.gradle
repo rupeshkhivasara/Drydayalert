@@ -118,6 +118,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('dda.jks')
+            storePassword 'drydayalerts'
+            keyAlias 'key0'
+            keyPassword 'drydayalerts'
+        }
     }
     buildTypes {
         debug {
