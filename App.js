@@ -20,7 +20,6 @@ function App() {
   }, []);
   return (
     <NavigationContainer ref={navigationRef}>
-      {/* <Text>Hello Prashant How are you.</Text> */}
       <StackNavigation />
     </NavigationContainer>
   );
