@@ -33,8 +33,11 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-star-rating": "^1.1.0",
+    "react-native-star-rating-widget": "^1.9.2",
     "react-native-vector-icons": "^10.2.0",
-    "react-native-webview": "^13.12.5"
+    "react-native-webview": "^13.12.5",
+    "react-native-svg": "14.1.0"
+
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

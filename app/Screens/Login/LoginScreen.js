@@ -27,7 +27,7 @@ const LoginScreen = ({navigation}) => {
     messaging()
       .getToken()
       .then(token => {
-        // console.log('<<fcmToken>>', token);
+        console.log('<<fcmToken>>', token);
         // AsyncStorage.setItem('fcmToken', token);
         setDeviceToken(token);
       });
