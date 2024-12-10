@@ -31,7 +31,9 @@ const LoginScreen = ({navigation}) => {
         // AsyncStorage.setItem('fcmToken', token);
         setDeviceToken(token);
       });
-    setDeviceNumber();
+    setTimeout(function () {
+      setDeviceNumber();
+    }, 2400);
   }, []);
 
   useEffect(() => {
@@ -131,13 +133,12 @@ const LoginScreen = ({navigation}) => {
         },
       );
 
-      console.log('####0', JSON.stringify(response));
-
       const data = await response.json(); // Parse the response as JSON
-      console.log('####0', JSON.stringify(data));
+
       if (data.success === true) {
         // Alert.alert('Success', 'Login successful.');
         AsyncStorage.setItem('userID', mobileNumber);
+        AsyncStorage.setItem('userState', selectedState);
         navigation.navigate('Home', {mobileNumber, state: selectedState});
       } else {
         //   Alert.alert('Error', data.message || 'Failed to login.');
@@ -150,21 +151,13 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <ImageBackground
-      source={{
-        uri: 'https://images.stockcake.com/public/d/8/b/d8b30886-c5c0-445d-b960-e610ff1b95e3/vibrant-bar-scene-stockcake.jpg',
-      }}
+      source={require('../../Assets/Fonts/Images/back.jpg')}
       style={styles.background}>
       <View style={styles.overlay}>
-        <Text style={styles.title}>Dry Day Alert</Text>
+        <Text style={styles.title}>Dry Day Alerts</Text>
         <Text style={styles.subtitle}>Ab Plan Karo Befikar...</Text>
         <TouchableWithoutFeedback onPress={setDeviceNumber}>
           <View style={styles.inputContainer}>
-            {/* <Icon
-              name="champagne_glasses" 
-              size={20}
-              color="#fff"
-              style={styles.inputIcon}
-            /> */}
             <TextInput
               style={styles.input}
               placeholder="Enter Mobile Number"
@@ -184,6 +177,11 @@ const LoginScreen = ({navigation}) => {
         </Picker>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, {backgroundColor: '#4682B4'}]}
+          onPress={() => navigation.navigate('PrivacyPolicy')}>
+          <Text style={styles.buttonText}>Privacy Policy</Text>
         </TouchableOpacity>
       </View>
     </ImageBackground>
