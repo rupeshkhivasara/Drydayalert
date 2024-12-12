@@ -135,7 +135,7 @@ const HomeScreen = () => {
     colors={['#1D2671', '#C33764']}
 
     style={styles.container}>
-      {isSubscribed ? (
+      {!isSubscribed ? (
         <ScrollView contentContainerStyle={styles.content}>
           <CarouselComponent />
           <Notifications notifications={notifications} />
