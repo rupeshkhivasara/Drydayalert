@@ -1,0 +1,80 @@
+diff --git a/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberActivity.java b/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberActivity.java
+index 17162b9..f9df257 100644
+--- a/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberActivity.java
++++ b/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberActivity.java
+@@ -16,6 +16,7 @@ import com.google.android.gms.auth.api.credentials.Credential;
+ import com.google.android.gms.auth.api.credentials.HintRequest;
+ import com.google.android.gms.common.ConnectionResult;
+ import com.google.android.gms.common.api.GoogleApiClient;
++import com.google.android.gms.common.GoogleApiAvailability;
+ 
+ public class DeviceNumberActivity extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+     private static final int PERMISSION_REQUEST_CODE = 100;
+@@ -43,20 +44,26 @@ public class DeviceNumberActivity extends Activity implements GoogleApiClient.Co
+     }
+ 
+     private void getPhone() {
+-        GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
+-                .addApi(Auth.CREDENTIALS_API)
+-                .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) DeviceNumberActivity.this)
+-                .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) DeviceNumberActivity.this)
+-                .build();
+-        googleApiClient.connect();
+-        HintRequest hintRequest = new HintRequest.Builder()
+-                .setPhoneNumberIdentifierSupported(true)
+-                .build();
+-        PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(googleApiClient, hintRequest);
+-        try {
+-            startIntentSenderForResult(intent.getIntentSender(), PERMISSION_REQUEST_CODE, null, 0, 0, 0);
+-        } catch (IntentSender.SendIntentException e) {
+-            e.printStackTrace();
++        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
++        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
++        if (resultCode == ConnectionResult.SUCCESS) {
++            GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
++                    .addApi(Auth.CREDENTIALS_API)
++                    .addConnectionCallbacks((GoogleApiClient.ConnectionCallbacks) DeviceNumberActivity.this)
++                    .addOnConnectionFailedListener((GoogleApiClient.OnConnectionFailedListener) DeviceNumberActivity.this)
++                    .build();
++            googleApiClient.connect();
++            HintRequest hintRequest = new HintRequest.Builder()
++                    .setPhoneNumberIdentifierSupported(true)
++                    .build();
++            PendingIntent intent = Auth.CredentialsApi.getHintPickerIntent(googleApiClient, hintRequest);
++            try {
++                startIntentSenderForResult(intent.getIntentSender(), PERMISSION_REQUEST_CODE, null, 0, 0, 0);
++            } catch (IntentSender.SendIntentException e) {
++                e.printStackTrace();
++            }
++        } else {
++                    // Toast.makeText(this, "Google Play Services is not available", Toast.LENGTH_SHORT).show();
+         }
+     }
+ 
+diff --git a/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberModule.java b/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberModule.java
+index e27c943..26d30b1 100644
+--- a/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberModule.java
++++ b/node_modules/react-native-device-number/android/src/main/java/com/reactlibrary/devicenumber/DeviceNumberModule.java
+@@ -47,8 +47,19 @@ public class DeviceNumberModule extends ReactContextBaseJavaModule {
+ 
+     @ReactMethod
+     public void get(Promise promise) {
++        Activity currentActivity = getCurrentActivity();
++        if (currentActivity != null) {
+         Intent intent = new Intent(getCurrentActivity(),DeviceNumberActivity.class);
+-        getCurrentActivity().startActivityForResult(intent,1);
+-        gPromise = promise ;
++            if(intent!= null){
++            getCurrentActivity().startActivityForResult(intent,1);
++            gPromise = promise ;
++            }
++            else {
++                    promise.reject("Error", "No current activity available");
++            }
++        }
++        else {
++        promise.reject("Error", "No current activity available");
++        }
+     }
+ }
+\ No newline at end of file

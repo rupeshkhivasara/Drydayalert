@@ -7,20 +7,22 @@ import {
 import SplashScreen from 'react-native-splash-screen';
 import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
-import StackNavigation from './app/Utils/Navigation/StackNavigation'
+import {navigationRef} from './app/Utils/Helper/RootNavigation';
+import StackNavigation from './app/Utils/Navigation/StackNavigation';
+import PushNotification from 'react-native-push-notification';
 
-function App (){
+function App() {
   useEffect(() => {
     setTimeout(function () {
       SplashScreen.hide();
     }, 2000);
+    PushNotification.removeAllDeliveredNotifications();
   }, []);
-  return(
+  return (
     <NavigationContainer ref={navigationRef}>
-      {/* <Text>Hello Prashant How are you.</Text> */}
       <StackNavigation />
     </NavigationContainer>
-  )
+  );
 }
 
 export default App;
