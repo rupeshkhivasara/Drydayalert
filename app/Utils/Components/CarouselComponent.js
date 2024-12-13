@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#fff',
     borderRadius: 8,
-    height: 200,
+    height: 230,
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     textAlign: 'center',
     marginBottom: 10,
-    color:'#112A46'
+    color: '#112A46',
   },
   userName: {
     fontSize: 16,

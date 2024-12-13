@@ -110,7 +110,10 @@ const LoginScreen = ({navigation}) => {
       Alert.alert('Error', 'Please enter a valid 10-digit mobile number.');
       return;
     }
-
+    if (!deviceToken || deviceToken === '') {
+      Alert.alert('Error', 'Something went wrong ! Please try again sometime.');
+      return;
+    }
     if (!selectedState || selectedState === 'Select State') {
       Alert.alert('Error', 'Please select a state.');
       return;
