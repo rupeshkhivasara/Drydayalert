@@ -5,7 +5,14 @@
  * @format
  */
 
-module.exports = {
+
+const { getDefaultConfig } = require('metro-config');
+
+module.exports = (async () => {
+  const {
+    resolver: { sourceExts, assetExts },
+  } = await getDefaultConfig();
+  return {
   transformer: {
     getTransformOptions: async () => ({
       transform: {
@@ -14,4 +21,9 @@ module.exports = {
       },
     }),
   },
-};
+  resolver: {
+    assetExts: [...assetExts, 'lottie'].filter(ext => ext !== 'svg'),
+    sourceExts: [...sourceExts, 'svg' ,'cjs',],
+  },
+  }
+});
