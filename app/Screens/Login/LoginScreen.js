@@ -126,7 +126,7 @@ const LoginScreen = ({navigation}) => {
       bodyData.append('token', deviceToken); // Add token
 
       const response = await fetch(
-        'https://globalmahasabha.com/DALRT/login.php',
+        'https://drydayalerts.in/admin_dryday/login.php',
         {
           method: 'POST',
           headers: {

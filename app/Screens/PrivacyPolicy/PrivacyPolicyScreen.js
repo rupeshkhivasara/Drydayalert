@@ -6,7 +6,7 @@ const PrivacyPolicyScreen = () => {
   return (
     <WebView
       source={{
-        uri: 'http://docs.google.com/gview?embedded=true&url=https://globalmahasabha.com/DALRT/Privacy_policy_for_dry_day_alerts_app.pdf',
+        uri: 'http://docs.google.com/gview?embedded=true&url=https://drydayalerts.in/admin_dryday/Privacy_policy_for_dry_day_alerts_app.pdf',
       }}
       style={styles.webview}
     />

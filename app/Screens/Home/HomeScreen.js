@@ -34,7 +34,7 @@ const HomeScreen = () => {
       bodyData.append('mobile_no', fetchMobileNumber);
 
       const response = await fetch(
-        'https://globalmahasabha.com/DALRT/verify_user.php',
+        'https://drydayalerts.in/admin_dryday/verify_user.php',
         {
           method: 'POST',
           headers: {
@@ -70,7 +70,7 @@ const HomeScreen = () => {
       bodyData.append('state', fetchState);
 
       const response = await fetch(
-        'https://globalmahasabha.com/DALRT/last_notification.php',
+        'https://drydayalerts.in/admin_dryday/last_notification.php',
         {
           method: 'POST',
           headers: {
