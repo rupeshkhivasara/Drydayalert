@@ -47,7 +47,7 @@ const Subscription = ({ onSubscribe, onExit }) => {
             merchantId: merchantId,
             merchantTransactionId:generateMerchantTransactionId(),
             merchantUserId: '',
-            amount: '100',
+            amount: (100 * 100),
             callbackURL: 'reactDemoAppScheme://',
             mobileNumber: "9999999999",
             paymentInstrument: {
