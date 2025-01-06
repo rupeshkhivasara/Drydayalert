@@ -125,6 +125,12 @@ const HomeScreen = () => {
     return () => backHandler.remove();
   }, [exitApp]);
 
+  // Callback after successful subscription
+  const handleSubscriptionSuccess = () => {
+    Alert.alert('Success', 'You are now subscribed!');
+    checkSubscriptionStatus();
+  };
+
   if (loading) {
     return (
       <LinearGradient
@@ -169,7 +175,7 @@ const HomeScreen = () => {
               tintColor="#FF6347"
             />
           }>
-          <Subscription />
+          <Subscription onSuccess={handleSubscriptionSuccess} />
         </ScrollView>
       )}
     </LinearGradient>
