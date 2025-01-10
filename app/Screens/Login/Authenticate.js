@@ -14,20 +14,16 @@ const Authenticate = ({ navigation }) => {
 
   const handelNotification = async () => {
     try {
-
-      messaging().onNotificationOpenedApp(async (remoteMessage) => {
-        console.log("########167", remoteMessage);
-
+      messaging().onNotificationOpenedApp(async remoteMessage => {
         await AsyncStorage.getItem('userID').then(value => {
           navigation.navigate('Home');
         });
       });
       await messaging().onMessage(remoteMessage => {
-        console.log("########", remoteMessage);
-
+        // console.log("########", remoteMessage);
       });
       messaging().setBackgroundMessageHandler(async remoteMessage => {
-        console.log("Background Notification Received:", remoteMessage);
+        // console.log("Background Notification Received:", remoteMessage);
       });
 
       messaging().createNotificationChannel({
@@ -36,7 +32,7 @@ const Authenticate = ({ navigation }) => {
         importance: messaging.Android.Importance.HIGH,
       });
     } catch (error) {
-      console.error("Notification Handling Error:", error);
+      // console.error("Notification Handling Error:", error);
     }
   };
 

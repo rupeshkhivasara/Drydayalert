@@ -1,12 +1,34 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
+import {StyleSheet, BackHandler} from 'react-native';
 import WebView from 'react-native-webview';
+import {navigationRef} from '../../Utils/Helper/RootNavigation';
 
-const PrivacyPolicyScreen = () => {
+const PrivacyPolicyScreen = props => {
+  let fetchVal = props.route.params.ftVal;
+
+  useEffect(() => {
+    const handleBackPress = () => {
+      // Navigate back to the previous screen
+      props.navigation.goBack();
+      return true; // Prevent default back behavior
+    };
+
+    // Add back button event listener
+    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+
+    // Cleanup listener on component unmount
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+    };
+  }, [props.navigation]);
+
   return (
     <WebView
       source={{
-        uri: 'http://docs.google.com/gview?embedded=true&url=https://drydayalerts.in/admin_dryday/Privacy_policy_for_dry_day_alerts_app.pdf',
+        uri:
+          fetchVal == 'privacy'
+            ? 'https://www.drydayalerts.in/privacy_policy.html'
+            : 'https://www.drydayalerts.in/refund_policy.html',
       }}
       style={styles.webview}
     />

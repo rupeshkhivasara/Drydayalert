@@ -14,8 +14,8 @@ export const requestNotificationPermission = async () => {
     },
   );
   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-    console.log('Notification permissions granted!');
+    // console.log('Notification permissions granted!');
   } else {
-    console.log('Notification permissions denied.');
+    // console.log('Notification permissions denied.');
   }
 };
