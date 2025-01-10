@@ -20,6 +20,7 @@ import {requestNotificationPermission} from '../../Utils/Helper/PermissionPopup'
 const HomeScreen = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [showSlider, setShowSlider] = useState(0);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false); // State to manage refresh
   const [exitApp, setExitApp] = useState(false);
@@ -55,11 +56,7 @@ const HomeScreen = () => {
         setIsSubscribed(false);
       }
     } catch (error) {
-      console.error('Error checking subscription:', error);
-      Alert.alert(
-        'Error',
-        'Unable to check subscription status. Please try again later.',
-      );
+      // console.error('Error checking subscription:', error);
     } finally {
       setLoading(false);
       setRefreshing(false); // Stop refreshing
@@ -83,13 +80,12 @@ const HomeScreen = () => {
         },
       );
       const data = await response.json();
+      const showFeedback = data?.server_response?.[0]?.show_feedback;
+
       setNotifications(data.server_response || []);
+      setShowSlider(showFeedback);
     } catch (error) {
-      console.error('Error fetching notifications:', error);
-      Alert.alert(
-        'Error',
-        'Unable to fetch notifications. Please try again later.',
-      );
+      // console.error('Error fetching notifications:', error);
     } finally {
       setRefreshing(false); // Stop refreshing
     }
@@ -98,6 +94,7 @@ const HomeScreen = () => {
   const handlePullToRefresh = () => {
     setRefreshing(true); // Set refreshing state to true
     checkSubscriptionStatus(); // Call the subscription check function
+    fetchNotifications();
   };
 
   const handleCancel = () => {
@@ -161,7 +158,7 @@ const HomeScreen = () => {
               tintColor="#FF6347" // iOS loader color
             />
           }>
-          <CarouselComponent />
+          {showSlider === 1 ? <CarouselComponent /> : <></>}
           <Notifications notifications={notifications} />
         </ScrollView>
       ) : (

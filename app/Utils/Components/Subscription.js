@@ -46,7 +46,9 @@ const Subscription = ({onSuccess}) => {
         description: 'Credits towards dry day alerts subscription',
         image: 'https://drydayalerts.in/admin_dryday/ic_launcher.png',
         currency: 'INR',
-        key: 'rzp_test_RNTxiIsLzHtupN', // Replace with your Razorpay key
+        // key: 'rzp_test_RNTxiIsLzHtupN', // Test key for Razorpay key
+        key: 'rzp_live_kelcxKjGKY9a0K', // Live key for Razorpay key
+        // amount: 5 * 100, // Test amount (₹5)
         amount: 29 * 100, // Fixed amount (₹29)
         name: 'Dry Day Alerts',
         order_id: data.id, // Use the fetched order_id
@@ -90,20 +92,20 @@ const Subscription = ({onSuccess}) => {
             const result = await response.json();
 
             if (response.ok) {
-              console.log('User status updated successfully:', result);
+              // console.log('User status updated successfully:', result);
               onSuccess();
             } else {
-              console.error('Failed to update user status:', result.error);
+              // console.error('Failed to update user status:', result.error);
             }
           } catch (error) {
-            console.error('Error calling update API:', error);
+            // console.error('Error calling update API:', error);
           }
         })
         .catch(error => {
           // Handle payment failure
           Alert.alert(
-            'Payment Failed',
-            `Error: ${error.code} | ${error.description}`,
+            'Payment Failed Please Try Again Later.',
+            // `Error: ${error.code} | ${error.description}`,
           );
         });
     } catch (error) {

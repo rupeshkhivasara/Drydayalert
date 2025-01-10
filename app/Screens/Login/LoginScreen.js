@@ -27,8 +27,7 @@ const LoginScreen = ({navigation}) => {
     messaging()
       .getToken()
       .then(token => {
-        console.log('<<fcmToken>>', token);
-        // AsyncStorage.setItem('fcmToken', token);
+        // console.log('<<fcmToken>>', token);
         setDeviceToken(token);
       });
     setTimeout(function () {
@@ -147,8 +146,8 @@ const LoginScreen = ({navigation}) => {
         //   Alert.alert('Error', data.message || 'Failed to login.');
       }
     } catch (error) {
-      console.error('Login error:', error);
-      Alert.alert('Error', 'Something went wrong. Please try again.');
+      // console.error('Login error:', error);
+      // Alert.alert('Error', 'Something went wrong. Please try again.');
     }
   };
 
@@ -181,11 +180,23 @@ const LoginScreen = ({navigation}) => {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#4682B4'}]}
-          onPress={() => navigation.navigate('PrivacyPolicy')}>
-          <Text style={styles.buttonText}>Privacy Policy</Text>
-        </TouchableOpacity>
+        <View style={styles.footer}>
+          <Text
+            onPress={() =>
+              navigation.navigate('PrivacyPolicy', {ftVal: 'privacy'})
+            }
+            style={styles.link}>
+            Privacy Policy
+          </Text>
+          <Text
+            onPress={() =>
+              navigation.navigate('PrivacyPolicy', {ftVal: 'refund'})
+            }
+            style={styles.link}>
+            Refund Policy
+          </Text>
+        </View>
+        <Text style={styles.poweredBy}>Powered by RBK VENTURA</Text>
       </View>
     </ImageBackground>
   );
@@ -254,6 +265,24 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    paddingHorizontal: 20, // Adjust horizontal padding for spacing
+  },
+  link: {
+    color: 'white',
+    fontSize: 14,
+    textDecorationLine: 'underline',
+    marginHorizontal: 10, // Adds spacing between the links
+  },
+  poweredBy: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 12,
+    marginTop: 100,
   },
 });
 
