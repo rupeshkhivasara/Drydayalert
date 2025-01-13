@@ -62,10 +62,10 @@ const Subscription = ({onSuccess}) => {
       RazorpayCheckout.open(options)
         .then(async paymentData => {
           // Handle successful payment
-          Alert.alert(
-            'Payment Success',
-            `Payment ID: ${paymentData.razorpay_payment_id}`,
-          );
+          // Alert.alert(
+          //   'Payment Success',
+          //   `Payment ID: ${paymentData.razorpay_payment_id}`,
+          // );
 
           // Fetch mobile number from AsyncStorage
           const mobile_no = await AsyncStorage.getItem('userID');
@@ -126,8 +126,9 @@ const Subscription = ({onSuccess}) => {
           • Your small decision, and tension-free one full year...
         </Text>
         <Text style={[styles.text, styles.highlightText]}>
-          • Only ₹29/- for one year notifications.
+          • Pay ₹29/- for six months and enjoy the next six months absolutely free!
         </Text>
+
 
         <View
           style={{
@@ -140,7 +141,7 @@ const Subscription = ({onSuccess}) => {
           • आपका छोटा सा फैसला, और तनाव मुक्त एक पूरा साल...
         </Text>
         <Text style={[styles.text, styles.highlightText]}>
-          • एक साल की सूचनाओं के लिए केवल २९/- रु.
+          • केवल २९/- रु. में पहले छह महीने का लाभ उठाएं और अगले छह महीने पूरी तरह मुफ्त पाएं!
         </Text>
 
         <View style={styles.buttonContainer}>

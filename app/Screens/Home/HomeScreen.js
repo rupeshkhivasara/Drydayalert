@@ -124,7 +124,7 @@ const HomeScreen = () => {
 
   // Callback after successful subscription
   const handleSubscriptionSuccess = () => {
-    Alert.alert('Success', 'You are now subscribed!');
+    Alert.alert('Success', 'Thank you for trusting us. You are very important member of our DDA family now. \n\n You will now receive dry day notification 2 days before evey dry day in your state.');
     checkSubscriptionStatus();
   };
 

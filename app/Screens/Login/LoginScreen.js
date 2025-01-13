@@ -165,7 +165,8 @@ const LoginScreen = ({navigation}) => {
               placeholder="Enter Mobile Number"
               placeholderTextColor="#ccc"
               value={mobileNumber}
-              editable={false} // Non-editable input
+              onChangeText={setMobileNumber} // Allow manual typing
+              editable={true} // Make the input editable
             />
           </View>
         </TouchableWithoutFeedback>
